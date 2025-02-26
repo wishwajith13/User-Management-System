@@ -5,6 +5,9 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Users from './Users';
+import LoginPage from "./LoginPage/LoginPage"
+import ProtectPage from "./ProtectPage/ProtectPage"
+import RedirectPage from "./RedirectPage/RedirectPage"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,6 +15,9 @@ root.render(
     <Routes>
       <Route path='/' element={<App/>}/>
       <Route path='/users' element={<Users/>}/>
+      <Route path='login' element={<LoginPage/>}/>
+      <Route path='private' element={<ProtectPage/>}/>
+      <Route path='oauth2/idpresponse' element={<RedirectPage/>}/>
     </Routes>
   </BrowserRouter>
 );
