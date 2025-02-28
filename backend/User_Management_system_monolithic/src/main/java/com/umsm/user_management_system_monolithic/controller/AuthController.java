@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,6 +19,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
 
+@RestController
 public class AuthController {
     @Value("${auth.cognitoUri}")
     private String cognitoUri;
@@ -36,7 +38,7 @@ public class AuthController {
                 "/oauth2/authorize?" +
                 "response_type=code" +
                 "&client_id=" + clientId +
-                "&redirect_uri=http://localhost:4200/oauth2/idpresponse" +
+                "&redirect_uri=http://localhost:3001/oauth2/idpresponse" +
                 "&scope=email+openid+profile";
         return ResponseEntity.ok(new UrlDto(url));
     }
@@ -48,7 +50,7 @@ public class AuthController {
                 + "grant_type=authorization_code" +
                 "&client_id=" + clientId +
                 "&code=" + code +
-                "&redirect_uri=http://localhost:4200/oauth2/idpresponse";
+                "&redirect_uri=http://localhost:3001/oauth2/idpresponse";
 
         String authenticationInfo = clientId + ":" + clientSecret;
         String basicAuthenticationInfo = Base64.getEncoder().encodeToString(authenticationInfo.getBytes());
