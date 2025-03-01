@@ -12,7 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 public class PrivateController {
 
     @GetMapping("/private")
-    public ResponseEntity<MessageDto> privateMessages(@AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<MessageDto> privateMessages(@AuthenticationPrincipal Jwt jwt) { //Inject the currently authenticated JWT token
         return ResponseEntity.ok(new MessageDto("Hello " + jwt.getClaim("name")));
     }
 }

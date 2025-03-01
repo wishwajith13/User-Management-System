@@ -46,6 +46,7 @@ public class AuthController {
     @GetMapping("/auth/callback")
     public ResponseEntity<TokenDto> callback(@RequestParam("code") String code) throws URISyntaxException {
 
+        //Build Cognito Token Request URL
         String urlStr = cognitoUri + "/oauth2/token?"
                 + "grant_type=authorization_code" +
                 "&client_id=" + clientId +
@@ -57,8 +58,9 @@ public class AuthController {
 
         HttpRequest request;
         try {
+            //Create Basic Authentication Header
             request = HttpRequest.newBuilder(new URI(urlStr))
-                    .header("Content-type", "application/x-www-form-urlencoded")
+                    .header("Content-type", "application/x-www-form-urlencoded") //standard for token requests
                     .header("Authorization", "Basic " + basicAuthenticationInfo)
                     .POST(HttpRequest.BodyPublishers.noBody())
                     .build();
@@ -70,7 +72,7 @@ public class AuthController {
 
         HttpResponse<String> response;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            response = client.send(request, HttpResponse.BodyHandlers.ofString()); //Send HTTP Request
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("Unable to request Cognito");
         }
@@ -81,7 +83,7 @@ public class AuthController {
 
         CognitoTokenResponseDto token;
         try {
-            token = JSON_MAPPER.readValue(response.body(), CognitoTokenResponseDto.class); //mapper to json_mapper
+            token = JSON_MAPPER.readValue(response.body(), CognitoTokenResponseDto.class); //Parse the JSON Response
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Unable to decode Cognito response");
         }
